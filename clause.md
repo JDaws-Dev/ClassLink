@@ -43,14 +43,16 @@ E. Simple Monetization-ready (optional, but design for it)
 - For MVP, you can stub this behind a feature flag.
 
 ========================
-2) TECH STACK (choose one and justify)
+2) TECH STACK (finalized)
 ========================
-Prefer: Next.js (App Router) + TypeScript.
+- Framework: Next.js 14+ (App Router) + TypeScript.
 - Frontend: React components in Next.js.
-- Backend: Next.js API routes (or server actions) OR a small Node/Express service.
-- DB: Postgres (Supabase) OR SQLite (for local dev) + Prisma ORM.
-- Auth: Google OAuth via NextAuth or custom OAuth (be explicit).
-- Deployment target: Vercel (assume).
+- UI: shadcn/ui + Tailwind CSS (vibrant student-friendly theme) + Framer Motion for animations.
+- Backend/DB: Convex (real-time database + serverless functions — replaces Prisma/Supabase).
+- AI: OpenAI API (GPT-4o) for the AI tutor/explainer.
+- Auth: Google OAuth via NextAuth.js (for Google login + Classroom API tokens).
+- Deployment target: Vercel (frontend) + Convex (backend).
+- Hosting: GitHub repository.
 - Use environment variables for secrets.
 
 ========================
@@ -68,29 +70,37 @@ Prefer: Next.js (App Router) + TypeScript.
 - IMPORTANT: Many Classroom resources are teacher-privileged. Design around the permissions the student account realistically has.
 
 ========================
-4) DATA MODEL
+4) DATA MODEL (Convex tables)
 ========================
-Propose a minimal schema, e.g.:
-- User { id, googleSub, email, name, avatarUrl, createdAt }
-- Token { userId, accessTokenEncrypted, refreshTokenEncrypted, expiresAt }
-- Course { id, googleCourseId, name, section, ... }
-- Coursework { id, googleCourseworkId, googleCourseId, title, dueDate, updatedAt, ... }
-- Submission { id, googleSubmissionId, googleCourseworkId, state, assignedGrade, updatedAt, ... }
-- PrivateComment { id, googleCommentId, googleSubmissionId, author, createdAt, contentHash, ... }
-- SeenState { userId, itemType, itemGoogleId, seenAt }
-- SyncState { userId, lastSyncAt, perCourseLastSyncJson }
+All tables are Convex documents (NoSQL-style, real-time by default):
+- users { googleSub, email, name, avatarUrl, createdAt }
+- tokens { userId, accessTokenEncrypted, refreshTokenEncrypted, expiresAt }
+- courses { googleCourseId, userId, name, section, teacherName }
+- coursework { googleCourseworkId, googleCourseId, userId, title, description, dueDate, alternateLink, updatedAt }
+- submissions { googleSubmissionId, googleCourseworkId, userId, state, assignedGrade, alternateLink, updatedAt }
+- privateComments { googleCommentId, googleSubmissionId, userId, author, text, createdAt }
+- seenStates { userId, itemType, itemGoogleId, seenAt }
+- syncStates { userId, lastSyncAt, perCourseLastSync }
 
 Keep the schema small and evolve later.
 
 ========================
 5) UX / UI
 ========================
-Keep it "13-year-old friendly" and fast:
-- Left sidebar: Courses.
+Keep it "13-year-old friendly", vibrant, and fast:
+- Left sidebar: Courses (collapsible on mobile).
 - Main: Inbox list.
 - Right panel or detail page: Item details + AI.
 - Use simple language: "New teacher comment", "Due soon", "Overdue".
 - Avoid "magical" branding. ClassLinker is practical.
+- Color palette: vibrant purples, blues, greens — not corporate gray.
+  - Primary: violet-600 (#7C3AED)
+  - Secondary: blue-600 (#2563EB)
+  - Accent: emerald-500 (#10B981)
+  - Warning: amber-500 (#F59E0B)
+  - Danger: rose-500 (#F43F5E)
+- Rounded corners, subtle shadows, smooth micro-animations (Framer Motion).
+- Dark mode support from day one.
 
 ========================
 6) SECURITY / PRIVACY
@@ -108,10 +118,10 @@ Keep it "13-year-old friendly" and fast:
 I want you (Claude) to produce, in order:
 1) A high-level architecture diagram in text (components + data flow).
 2) Concrete API endpoints (routes) and what they return.
-3) DB schema (Prisma or SQL).
+3) DB schema (Convex schema.ts).
 4) OAuth setup steps + required scopes.
 5) Classroom sync algorithm (polling + diffing).
-6) AI tutor prompt template + guardrails logic (server-side).
+6) AI tutor prompt template + guardrails logic (OpenAI GPT-4o, server-side).
 7) Minimal UI routes/components list.
 8) Then generate the actual code scaffold for the Next.js project with:
    - env.example
