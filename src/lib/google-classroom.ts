@@ -1,5 +1,5 @@
 // =============================================================================
-// ClassLinker - Google Classroom API Module (Placeholder)
+// ClassLink - Google Classroom API Module (Placeholder)
 // =============================================================================
 // This module provides typed wrappers around the Google Classroom REST API.
 // Currently stubbed with mock data for development.

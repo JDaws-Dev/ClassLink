@@ -3,7 +3,7 @@ import "./globals.css";
 import { ConvexProviderWrapper } from "@/components/providers/convex-provider";
 
 export const metadata: Metadata = {
-  title: "ClassLinker",
+  title: "ClassLink",
   description: "Your Google Classroom inbox, simplified.",
 };
 

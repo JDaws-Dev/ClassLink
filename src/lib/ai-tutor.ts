@@ -1,5 +1,5 @@
 // =============================================================================
-// ClassLinker - AI Tutor Module
+// ClassLink - AI Tutor Module
 // =============================================================================
 // Provides Socratic tutoring assistance for students using AI.
 // Currently returns mock responses for development; will integrate with
@@ -24,7 +24,7 @@
  * This prompt establishes the tutor's personality, guardrails, and behavior.
  * The {helpLevel} placeholder is replaced at runtime.
  */
-export const AI_TUTOR_SYSTEM_PROMPT = `You are a friendly, encouraging tutor helping a 13-year-old middle school student with their schoolwork. Your name is ClassLinker Tutor.
+export const AI_TUTOR_SYSTEM_PROMPT = `You are a friendly, encouraging tutor helping a 13-year-old middle school student with their schoolwork. Your name is ClassLink Tutor.
 
 CORE RULES — you must ALWAYS follow these:
 1. NEVER give the student the final answer to any assignment, quiz, or homework problem.

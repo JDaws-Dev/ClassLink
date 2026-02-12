@@ -180,7 +180,7 @@ export default function LandingPage() {
               <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
             </svg>
           </div>
-          <span className="text-lg font-bold text-gray-900">ClassLinker</span>
+          <span className="text-lg font-bold text-gray-900">ClassLink</span>
         </div>
         <Link
           href="/dashboard"
@@ -209,7 +209,7 @@ export default function LandingPage() {
           className="mt-6 text-5xl font-extrabold leading-tight tracking-tight sm:text-6xl md:text-7xl"
         >
           <span className="bg-gradient-to-r from-violet-600 via-blue-600 to-violet-600 bg-clip-text text-transparent">
-            ClassLinker
+            ClassLink
           </span>
         </motion.h1>
 
@@ -224,7 +224,7 @@ export default function LandingPage() {
           variants={itemVariants}
           className="mx-auto mt-4 max-w-xl text-base leading-relaxed text-gray-500 sm:text-lg"
         >
-          ClassLinker pulls all your Google Classroom assignments, comments, and
+          ClassLink pulls all your Google Classroom assignments, comments, and
           grades into one simple inbox so you always know what&apos;s due and
           what your teachers said.
         </motion.p>
@@ -286,7 +286,7 @@ export default function LandingPage() {
           Built for students, by students
         </p>
         <p className="mt-2 text-xs text-gray-400">
-          ClassLinker is not affiliated with, endorsed by, or sponsored by
+          ClassLink is not affiliated with, endorsed by, or sponsored by
           Google. Google Classroom is a trademark of Google LLC.
         </p>
       </footer>

@@ -1,5 +1,5 @@
 // =============================================================================
-// ClassLinker - Mock Data Module
+// ClassLink - Mock Data Module
 // =============================================================================
 // Comprehensive mock data for development and testing.
 // This module provides typed mock data that mirrors the shape of real

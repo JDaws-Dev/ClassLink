@@ -59,7 +59,7 @@ export function Sidebar({ user, courses, unseenCount, onClose }: SidebarProps) {
           </svg>
         </div>
         <span className="text-lg font-bold text-gray-900 tracking-tight">
-          ClassLinker
+          ClassLink
         </span>
         {/* Close button for mobile overlay */}
         {onClose && (
