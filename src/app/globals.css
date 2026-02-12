@@ -1,0 +1,109 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 262 83% 8%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 262 83% 8%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 262 83% 8%;
+
+    --primary: 263 70% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 262 47% 95%;
+    --secondary-foreground: 262 83% 18%;
+
+    --muted: 262 20% 95%;
+    --muted-foreground: 262 10% 45%;
+
+    --accent: 262 47% 93%;
+    --accent-foreground: 262 83% 18%;
+
+    --destructive: 350 89% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 262 20% 90%;
+    --input: 262 20% 90%;
+    --ring: 263 70% 58%;
+
+    --radius: 0.75rem;
+  }
+
+  .dark {
+    --background: 262 50% 6%;
+    --foreground: 262 10% 93%;
+
+    --card: 262 45% 9%;
+    --card-foreground: 262 10% 93%;
+
+    --popover: 262 45% 9%;
+    --popover-foreground: 262 10% 93%;
+
+    --primary: 263 70% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 262 40% 16%;
+    --secondary-foreground: 262 10% 90%;
+
+    --muted: 262 30% 14%;
+    --muted-foreground: 262 10% 55%;
+
+    --accent: 262 40% 16%;
+    --accent-foreground: 262 10% 90%;
+
+    --destructive: 350 89% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 262 30% 16%;
+    --input: 262 30% 16%;
+    --ring: 263 70% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+}
+
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(263 70% 58% / 0.3);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(263 70% 58% / 0.5);
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(263 70% 58% / 0.3) transparent;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
