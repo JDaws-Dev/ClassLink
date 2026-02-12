@@ -72,6 +72,19 @@ CURRENT CONTEXT:
     return NextResponse.json({ response });
   } catch (error) {
     console.error("AI Tutor API error:", error);
+
+    if (error instanceof OpenAI.APIError) {
+      const message =
+        error.status === 401
+          ? "Invalid API key. Please check your OPENAI_API_KEY."
+          : error.status === 429
+            ? "Rate limit exceeded. Please try again in a moment."
+            : error.status === 402 || error.status === 403
+              ? "OpenAI billing issue. Check your account at platform.openai.com."
+              : `OpenAI error: ${error.message}`;
+      return NextResponse.json({ error: message }, { status: error.status || 500 });
+    }
+
     return NextResponse.json(
       { error: "Something went wrong. Please try again." },
       { status: 500 }
