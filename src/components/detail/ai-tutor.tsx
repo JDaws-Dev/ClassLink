@@ -30,15 +30,32 @@ const helpLevelDescriptions: Record<HelpLevel, string> = {
   walkthrough: "Step-by-step breakdown",
 };
 
-function getMockResponse(helpLevel: HelpLevel): string {
-  switch (helpLevel) {
-    case "explain":
-      return "This assignment is asking you to practice working with exponents. An exponent tells you how many times to multiply a number by itself. For example, 2\u00B3 means 2 \u00D7 2 \u00D7 2 = 8. Try working through each problem by writing out the multiplication first!";
-    case "hint":
-      return "Think about what the base number is and how many times you need to multiply it. What happens when you multiply 3 by itself 4 times?";
-    case "walkthrough":
-      return "Let's break this down step by step:\n1. First, identify the base and the exponent\n2. Write out the multiplication (e.g., 5\u00B2 = 5 \u00D7 5)\n3. Calculate from left to right\n4. Double-check by counting the number of times you multiplied\n\nNow try applying these steps to your first problem!";
+async function fetchAIResponse(
+  assignmentTitle: string,
+  assignmentDescription: string,
+  studentQuestion: string,
+  helpLevel: HelpLevel,
+  chatHistory: { role: string; content: string }[]
+): Promise<string> {
+  const res = await fetch("/api/ai-tutor", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      assignmentTitle,
+      assignmentDescription,
+      studentQuestion,
+      helpLevel,
+      chatHistory,
+    }),
+  });
+
+  if (!res.ok) {
+    const data = await res.json().catch(() => ({}));
+    throw new Error(data.error || "Failed to get response");
   }
+
+  const data = await res.json();
+  return data.response;
 }
 
 function LoadingDots() {
@@ -67,6 +84,7 @@ export function AITutor({
   const [helpLevel, setHelpLevel] = useState<HelpLevel>("explain");
   const [question, setQuestion] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [chatHistory, setChatHistory] = useState<QAPair[]>([]);
   const chatEndRef = useRef<HTMLDivElement>(null);
   const levels: HelpLevel[] = ["explain", "hint", "walkthrough"];
@@ -77,22 +95,37 @@ export function AITutor({
     }
   }, [chatHistory, isLoading]);
 
-  const handleAsk = () => {
+  const handleAsk = async () => {
     if (!question.trim() || isLoading) return;
 
     const currentQuestion = question.trim();
     setQuestion("");
     setIsLoading(true);
+    setError(null);
 
-    // Simulate AI response delay
-    setTimeout(() => {
-      const response = getMockResponse(helpLevel);
+    // Build chat history for context
+    const apiChatHistory = chatHistory.flatMap((qa) => [
+      { role: "user", content: qa.question },
+      { role: "assistant", content: qa.answer },
+    ]);
+
+    try {
+      const response = await fetchAIResponse(
+        assignmentTitle,
+        assignmentDescription,
+        currentQuestion,
+        helpLevel,
+        apiChatHistory
+      );
       setChatHistory((prev) => [
         ...prev,
         { question: currentQuestion, helpLevel, answer: response },
       ]);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Something went wrong");
+    } finally {
       setIsLoading(false);
-    }, 1200 + Math.random() * 800);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -210,6 +243,13 @@ export function AITutor({
               Thinking
               <LoadingDots />
             </div>
+          </div>
+        )}
+
+        {/* Error state */}
+        {error && (
+          <div className="rounded-lg bg-red-50 border border-red-100 px-3 py-2">
+            <p className="text-xs text-red-600">{error}</p>
           </div>
         )}
 
